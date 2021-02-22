@@ -1,0 +1,6 @@
+{
+	"name" : "vizzy-php/asterisk-tool",
+	"type" : "library",
+	"description" : "PHP Asterisk Tool",
+	"license" : "MIT"
+}
