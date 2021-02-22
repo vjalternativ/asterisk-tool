@@ -2,5 +2,10 @@
 	"name" : "vizzy-php/asterisk-tool",
 	"type" : "library",
 	"description" : "PHP Asterisk Tool",
-	"license" : "MIT"
+	"license" : "MIT",
+	"autoload" : {
+		"psr-4" : {
+			"vizzy\\php\\lib\\asterisk\\" : "src"
+		}
+	}
 }

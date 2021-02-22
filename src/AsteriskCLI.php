@@ -1,4 +1,7 @@
 <?php
+namespace vizzy\php\lib\asterisk;
+
+use Exception;
 
 class AsteriskCLI
 {
