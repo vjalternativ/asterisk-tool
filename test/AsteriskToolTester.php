@@ -14,42 +14,9 @@ class AsteriskToolTester
         $this->asteriskCLI = new AsteriskCLI('/dacx/ameyo/asap/sbin/asterisk');
     }
 
-    function getRegistrationStatus()
-    {
-        $rows = $this->asteriskCLI->getSipRegistryStatus();
-
-        foreach ($rows as $key => $row) {
-
-            $row['status'] = "Down";
-
-            if ($row['Reg.Time']) {
-                $date = DateTime::createFromFormat("D, d M Y H:i:s", $row['Reg.Time']);
-                $row['regtime'] = $date->format("Y-m-d H:i:s");
-            }
-
-            if ($row['State'] == 'Registered') {
-                $row['status'] = "Up";
-            } else {
-
-                if ($row['Reg.Time']) {
-                    $now = new DateTime();
-                    $now->sub(new DateInterval("PT" . $row['Refresh'] . "S"));
-                    $nowMinusRefresh = $now->format("Y-m-d H:i:s");
-                    if ($nowMinusRefresh <= $row['regtime']) {
-                        $row['status'] = "Up";
-                    }
-                }
-            }
-
-            $rows[$key] = $row;
-        }
-
-        return $rows;
-    }
-
     function execute()
     {
-        $list = $this->asteriskCLI->getSIPShowPeers();
+        $list = $this->getRegistrationStatus();
         echo "<pre>";
         print_r($list);
         die();

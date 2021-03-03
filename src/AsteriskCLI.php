@@ -108,8 +108,7 @@ class AsteriskCLI
     function getSipShowRegistry()
     {
         $rx = 'sip show registry';
-        $result = $this->execute($rx, false);
-        $list = explode("\n", $result);
+        $list = $this->execute($rx, false);
         array_pop($list);
 
         $headers = array(
