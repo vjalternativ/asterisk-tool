@@ -25,14 +25,14 @@ class AsteriskCLI
         if ($aftercmd) {
             $cmd .= '|' . $aftercmd;
         }
-        return trim(shell_exec($cmd));
+        $result = trim(shell_exec($cmd));
+        return explode("\n", $result);
     }
 
     function getChannels()
     {
         $rx = 'core show channels concise';
-        $result = $this->execute($rx, false);
-        $list = explode("\n", $result);
+        $list = $this->execute($rx, false);
 
         $data = array();
         foreach ($list as $line) {
@@ -46,8 +46,7 @@ class AsteriskCLI
     function getDialPlanGlobals()
     {
         $rx = 'dialplan show globals';
-        $result = $this->execute($rx, false);
-        $list = explode("\n", $result);
+        $list = $this->execute($rx, false);
         array_pop($list);
         array_pop($list);
 
@@ -63,43 +62,30 @@ class AsteriskCLI
         return $data;
     }
 
-    function getSipRegistryStatus()
+    function mapCLIOutputWithHeaders($headers = array(), $linesArray = array())
     {
-        $rx = 'sip show registry';
-        $result = $this->execute($rx, false);
-        $list = explode("\n", $result);
-        $line = $list[0];
-
+        $line = $linesArray[0];
         $headersRange = array();
+        foreach ($headers as $key => $header) {
 
-        $headersRange['Host'] = array(
-            strpos($line, "Host"),
-            strpos($line, "dnsmgr") - strpos($line, "Host")
-        );
-        $headersRange['dnsmgr'] = array(
-            strpos($line, "dnsmgr"),
-            strpos($line, "Username") - strpos($line, "dnsmgr")
-        );
-        $headersRange['Username'] = array(
-            strpos($line, "Username"),
-            strpos($line, "Refresh") - strpos($line, "Username")
-        );
-        $headersRange['Refresh'] = array(
-            strpos($line, "Refresh"),
-            strpos($line, "State") - strpos($line, "Refresh")
-        );
-        $headersRange['State'] = array(
-            strpos($line, "State"),
-            strpos($line, "Reg.Time") - strpos($line, "State")
-        );
-        $headersRange['Reg.Time'] = array(
-            strpos($line, "Reg.Time")
-        );
+            if (isset($headers[$key + 1])) {
 
-        unset($list[0]);
-        array_pop($list);
+                $nextHeader = $headers[$key + 1];
+
+                $headersRange[$header] = array(
+                    strpos($line, $header),
+                    strpos($line, $nextHeader) - strpos($line, $header)
+                );
+            } else {
+                $headersRange[$header] = array(
+                    strpos($line, $header)
+                );
+            }
+        }
+
+        unset($linesArray[0]);
         $data = array();
-        foreach ($list as $line) {
+        foreach ($linesArray as $line) {
             $item = array();
             foreach ($headersRange as $field => $range) {
 
@@ -117,6 +103,46 @@ class AsteriskCLI
             }
         }
         return $data;
+    }
+
+    function getSipShowRegistry()
+    {
+        $rx = 'sip show registry';
+        $result = $this->execute($rx, false);
+        $list = explode("\n", $result);
+        array_pop($list);
+
+        $headers = array(
+            "Host",
+            "dnsmgr",
+            "Username",
+            "Refresh",
+            "State",
+            "Reg.Time"
+        );
+
+        return $this->mapCLIOutputWithHeaders($headers, $list);
+    }
+
+    function getSIPShowPeers()
+    {
+        $rx = 'sip show peers';
+        $list = $this->execute($rx, false);
+
+        array_pop($list);
+
+        $headers = array(
+            "Name/username",
+            "Host",
+            "Dyn",
+            "Forcerport",
+            "Comedia",
+            "ACL Port",
+            "Status",
+            "Description"
+        );
+
+        return $this->mapCLIOutputWithHeaders($headers, $list);
     }
 }
 ?>
