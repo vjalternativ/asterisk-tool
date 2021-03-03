@@ -1,6 +1,7 @@
 .buildpath
 .project
 composer.phar
+php_errors.log
 org.*
 /vendor/
 
