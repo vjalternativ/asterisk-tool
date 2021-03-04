@@ -36,8 +36,12 @@ class AsteriskCLI
 
         $data = array();
         foreach ($list as $line) {
-            $arr = explode("!", $line);
-            $data[$arr[0]] = $arr;
+            if ($line) {
+                $arr = explode("!", $line);
+                if ($arr) {
+                    $data[$arr[0]] = $arr;
+                }
+            }
         }
 
         return $data;
