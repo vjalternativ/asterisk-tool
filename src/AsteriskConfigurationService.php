@@ -53,14 +53,14 @@ class AsteriskConfigurationService
         return $list;
     }
 
-    private function appendSIPEntity($name)
+    private function appendSIPEntity($name, $host = "localhost", $port = "8800")
     {
         $sip = PHP_EOL . '[' . $name . ']' . PHP_EOL;
         $sip .= 'type=friend' . PHP_EOL;
         $sip .= 'username=' . $name . PHP_EOL;
         $sip .= 'secret=' . $name . PHP_EOL;
-        $sip .= 'host=localhost' . PHP_EOL;
-        $sip .= 'port=8800' . PHP_EOL;
+        $sip .= 'host=' . $host . PHP_EOL;
+        $sip .= 'port=' . $port . PHP_EOL;
         $sip .= 'dtmfmode=rfc2833' . PHP_EOL;
         $sip .= 'fromdomain=dynamic' . PHP_EOL;
         $sip .= 'nat=no' . PHP_EOL;
@@ -84,13 +84,13 @@ class AsteriskConfigurationService
         shell_exec($cmd);
     }
 
-    function createEntity($name)
+    function createEntity($name, $host = "localhost", $port = "8800")
     {
         if (isset($this->sipList[$name])) {
             echo "Entity already exist " . $name . PHP_EOL;
         } else {
 
-            $this->appendSIPEntity($name);
+            $this->appendSIPEntity($name, $host, $port);
         }
     }
 
