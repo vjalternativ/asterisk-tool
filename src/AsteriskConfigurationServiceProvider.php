@@ -26,7 +26,7 @@ class AsteriskConfigurationServiceProvider
 
     public function getConfigurationService($profile)
     {
-        return isset($this->profileVsConfigurationService[$profile]) ? $this->profileVsConfigurationService[$profile] : false;
+        return isset($this->profileVsConfigurationService[$profile]) ? $this->asConfigurationService($this->profileVsConfigurationService[$profile]) : false;
     }
 
     private function asConfigurationService(AsteriskConfigurationService $ob)
