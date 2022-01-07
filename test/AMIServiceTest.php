@@ -1,15 +1,15 @@
 <?php
 require_once '../src/AMIServiceProvider.php';
-require_once '../src/SIPEntityGenerator.php';
+require_once '../src/AsteriskConfigurationService.php';
 use vizzy\php\lib\asterisk\AMIServiceProvider;
-use vizzy\php\lib\asterisk\SIPEntityGenerator;
+use vizzy\php\lib\asterisk\AsteriskConfigurationService;
 
 class AMIServiceTest
 {
 
     function run()
     {
-        $sipEntityGenerator = new SIPEntityGenerator();
+        $sipEntityGenerator = new AsteriskConfigurationService();
         $sipEntityGenerator->createEntity("test");
 
         $extenVsLines = array();

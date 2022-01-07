@@ -1,7 +1,7 @@
 <?php
 namespace vizzy\php\lib\asterisk;
 
-class SIPEntityGenerator
+class AsteriskConfigurationService
 {
 
     private $filepath;
@@ -20,7 +20,7 @@ class SIPEntityGenerator
         $this->extensionList = $this->getContextList("extensions.conf");
     }
 
-    function getContextList($file)
+    private function getContextList($file)
     {
         $list = array();
         $handle = fopen($this->filepath . $file, "r");
