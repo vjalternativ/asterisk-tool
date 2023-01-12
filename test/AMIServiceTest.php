@@ -19,7 +19,12 @@ class AMIServiceTest
         // $sipEntityGenerator->reload();
         AMIServiceProvider::getInstance()->registerAMI("callserver", "localhost", "ameyodebug", "dacx");
         $amiService = AMIServiceProvider::getInstance()->getAMIService("callserver");
-        $amiService->generateChannels(50, "test", "test", "moh");
+
+        $generator1 = new LoadGeneratorThread($amiService);
+        $generator2 = new LoadGeneratorThread($amiService);
+        $generator1->start();
+        $generator2->start();
+        // $amiService->generateChannels(50, "test", "test", "moh");
     }
 }
 
