@@ -23,7 +23,9 @@ class AMIServiceTest
         $generator1 = new LoadGeneratorThread($amiService);
         $generator2 = new LoadGeneratorThread($amiService);
         $generator1->start();
+        $generator1->join();
         $generator2->start();
+        $generator2->join();
         // $amiService->generateChannels(50, "test", "test", "moh");
     }
 }
