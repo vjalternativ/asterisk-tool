@@ -19,7 +19,7 @@ class AMIService
     function generateChannels($num, $entity, $context, $exten)
     {
         for ($i = 1; $i <= $num; $i ++) {
-            $data = 'action=Originate,channel=SIP/' . $i . '@' . $entity . ',exten=' . $exten . ',context=' . $context . ',priority=1';
+            $data = 'action=Originate,channel=SIP/' . $i . '@' . $entity . ',exten=' . $exten . ',context=' . $context . ',priority=1,async=true';
             $this->astman->request($data);
         }
     }
